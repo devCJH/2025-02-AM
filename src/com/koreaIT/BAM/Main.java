@@ -47,7 +47,27 @@ class Main {
 					Article article = articles.get(i);
 					System.out.printf("%d	|	%s\n", article.id, article.title);
 				}
-			} 
+				
+			} else if (cmd.startsWith("article detail ")) {
+				String[] cmdBits = cmd.split(" ");
+				int id = Integer.parseInt(cmdBits[2]);
+				
+				boolean a = false; 
+				
+				for (Article article : articles) {
+					if (article.id == id) {
+						System.out.printf("번호 : %d\n", article.id);
+						System.out.printf("제목 : %s\n", article.title);
+						System.out.printf("내용 : %s\n", article.body);
+						a = true;
+						break;
+					}
+				}
+				
+				if (a == false) {
+					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
+				}
+			}
 		}
 		
 		sc.close();
