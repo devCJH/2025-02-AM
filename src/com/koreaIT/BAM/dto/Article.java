@@ -2,11 +2,13 @@ package com.koreaIT.BAM.dto;
 
 public class Article {
 	private int id;
+	private String regDate;
 	private String title;
 	private String body;
 	
-	public Article(int id, String title, String body) {
+	public Article(int id, String regDate, String title, String body) {
 		this.id = id;
+		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
 	}
@@ -17,6 +19,14 @@ public class Article {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 
 	public String getTitle() {
