@@ -14,12 +14,14 @@ public class Main {
 	private static List<Member> members;
 	private static int lastArticleId;
 	private static int lastMemberId;
+	private static Member loginedMember;
 	
 	static {
 		articles = new ArrayList<>();
 		members = new ArrayList<>();
 		lastArticleId = 0;
 		lastMemberId = 0;
+		loginedMember = null;
 	}
 	
 	public static void main(String[] args) {
@@ -44,6 +46,11 @@ public class Main {
 			}
 			
 			if (cmd.equals("member join")) {
+				if (loginedMember != null) {
+					System.out.println("로그아웃 후 이용해주세요");
+					continue;
+				}
+				
 				System.out.println("== 회원 가입 ==");
 				
 				String loginId = null;
@@ -116,6 +123,59 @@ public class Main {
 				members.add(member);
 				
 				System.out.printf("%s님의 가입이 완료되었습니다\n", loginId);
+				
+			} else if (cmd.equals("member login")) {
+				if (loginedMember != null) {
+					System.out.println("로그아웃 후 이용해주세요");
+					continue;
+				}
+				
+				System.out.println("== 로그인 ==");
+				System.out.printf("아이디 : ");
+				String loginId = sc.nextLine().trim();
+				System.out.printf("비밀번호 : ");
+				String loginPw = sc.nextLine().trim();
+				
+				if (loginId.length() == 0) {
+					System.out.println("아이디를 입력해주세요");
+					continue;
+				}
+				
+				if (loginPw.length() == 0) {
+					System.out.println("비밀번호를 입력해주세요");
+					continue;
+				}
+				
+				Member foundMember = null;
+				
+				for (Member member : members) {
+					if (loginId.equals(member.getLoginId())) {
+						foundMember = member;
+						break;
+					}
+				}
+				
+				if (foundMember == null) {
+					System.out.printf("[ %s ]은(는) 존재하지 않는 아이디입니다\n", loginId);
+					continue;
+				}
+				
+				if (!foundMember.getLoginPw().equals(loginPw)) {
+					System.out.println("비밀번호가 일치하지 않습니다");
+					continue;
+				}
+				
+				loginedMember = foundMember;
+				System.out.printf("[ %s ]님 환영합니다~\n", foundMember.getName());
+				
+			} else if (cmd.equals("member logout")) {
+				if (loginedMember == null) {
+					System.out.println("로그인 후 이용해주세요");
+					continue;
+				}
+				
+				loginedMember = null;
+				System.out.println("정상적으로 로그아웃 되었습니다");
 				
 			} else if (cmd.equals("article write")) {
 				System.out.println("== 게시물 작성 ==");
