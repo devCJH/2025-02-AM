@@ -195,16 +195,38 @@ public class App {
 
 				System.out.printf("%d번 게시물이 생성되었습니다\n", lastArticleId);
 
-			} else if (cmd.equals("article list")) {
+			} else if (cmd.startsWith("article list")) {
 				if (articles.size() == 0) {
 					System.out.println("게시물이 존재하지 않습니다");
 					continue;
 				}
 
+				String searchKeyword = cmd.substring("article list".length()).trim();
+				
+				List<Article> printArticles = articles;
+				
+				if (searchKeyword.length() > 0) {
+
+					System.out.println("검색어 : " + searchKeyword);
+					
+					printArticles = new ArrayList<>();
+					
+					for (Article article : articles) {
+						if (article.getTitle().contains(searchKeyword)) {
+							printArticles.add(article);
+						}
+					}
+					
+					if (printArticles.size() == 0) {
+						System.out.println("검색 결과가 없습니다");
+						continue;
+					}
+				}
+				
 				System.out.println("== 게시물 목록 ==");
 				System.out.println("번호	|	제목	|	작성자	|	작성일");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
+				for (int i = printArticles.size() - 1; i >= 0; i--) {
+					Article article = printArticles.get(i);
 					
 					String writerName = getWriterNameById(article.getMemberId());
 					
